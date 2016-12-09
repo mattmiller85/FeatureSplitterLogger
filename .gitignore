@@ -1,0 +1,7 @@
+*.dll
+bin/Debug/netcoreapp1.1/FeatureSplitterLogger.pdb
+bin/Debug/netcoreapp1.1/FeatureSplitterLogger.runtimeconfig.dev.json
+bin/Debug/netcoreapp1.1/FeatureSplitterLogger.runtimeconfig.json
+obj/Debug/netcoreapp1.1/.IncrementalCache
+*.rsp
+obj/Debug/netcoreapp1.1/.SDKVersion

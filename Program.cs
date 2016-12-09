@@ -26,13 +26,14 @@ namespace ConsoleApplication
         private static void AddCommandRange(Options options, List<string> commands)
         {
             Enumerable.Range(options.LineNumberRange.From, options.LineNumberRange.To - options.LineNumberRange.From + 1).ToList().ForEach(ln => {
-                commands.Add($"exec cucumber -p {options.Profile} {Path.Combine(FeatureRootPath, options.FeaturePath)}:{ln} BROWSER=chrome");   
+                commands.Add($"exec cucumber -p {options.Profile} {Path.Combine(options.FeaturePath)}:{ln} BROWSER=chrome");   
             });
             commands.ForEach(c => 
             {
                 var psi = new ProcessStartInfo(@"C:\RailsInstaller\Ruby1.9.3\bin\bundle.bat", c);
                 psi.RedirectStandardOutput = true;
                 psi.RedirectStandardError = true;
+                psi.WorkingDirectory = FeatureRootPath;
                 var proc = Process.Start(psi);
                 var output = proc.StandardOutput.ReadToEnd();
                 var error = proc.StandardError.ReadToEnd();
