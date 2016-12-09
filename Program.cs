@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using FeatureSplitterLogger.Utils;
 
 namespace ConsoleApplication
 {
+    
     public class Program
     {
+        const string FeatureRootPath = @"C:\TFS\Grange Commercial SEQ\Olive\Specifications\SEQ";
+
         public static void Main(string[] args)
         {
             var argParser = new ArgParser(args);
@@ -21,9 +26,19 @@ namespace ConsoleApplication
         private static void AddCommandRange(Options options, List<string> commands)
         {
             Enumerable.Range(options.LineNumberRange.From, options.LineNumberRange.To - options.LineNumberRange.From + 1).ToList().ForEach(ln => {
-                commands.Add($"bundle exec cucumber -p {options.Profile} {options.FeaturePath}:{ln} BROWSER=chrome");   
+                commands.Add($"exec cucumber -p {options.Profile} {Path.Combine(FeatureRootPath, options.FeaturePath)}:{ln} BROWSER=chrome");   
             });
-            commands.ForEach(Console.WriteLine);
+            commands.ForEach(c => 
+            {
+                var psi = new ProcessStartInfo(@"C:\RailsInstaller\Ruby1.9.3\bin\bundle.bat", c);
+                psi.RedirectStandardOutput = true;
+                psi.RedirectStandardError = true;
+                var proc = Process.Start(psi);
+                var output = proc.StandardOutput.ReadToEnd();
+                var error = proc.StandardError.ReadToEnd();
+                proc.WaitForExit();
+                Console.WriteLine(string.IsNullOrWhiteSpace(output) ? error : output);
+            });
         }
     }
 }

@@ -7,7 +7,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\FeatureSplitterLogger.dll",
-            "args": [],
+            "args": ["asdfasd", "-p", "dev", "-r", "45-55"],
             "cwd": "${workspaceRoot}",
             "externalConsole": false,
             "stopAtEntry": false,
